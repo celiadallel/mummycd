@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maman Héroïne — par Célia</title>
+  <meta name="theme-color" content="#111827">
+  <style>
+    :root{
+      --bg:#0f172a;       /* slate-900 */
+      --card:#111827;     /* slightly lighter */
+      --text:#e5e7eb;     /* gray-200 */
+      --muted:#9ca3af;    /* gray-400 */
+      --accent:#a78bfa;   /* violet-400 */
+      --accent2:#22d3ee;  /* cyan-400 */
+      --good:#34d399;     /* emerald-400 */
+      --btn:#1f2937;      /* slate-800 */
+      --btnHover:#374151; /* slate-700 */
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: linear-gradient(180deg,var(--bg),#0b1224);
+      color:var(--text);
+      min-height:100svh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+    .app{
+      width: min(720px, 92vw);
+      margin: 24px auto;
+    }
+    header{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:12px;margin-bottom:16px;
+    }
+    .brand{
+      display:flex;align-items:center;gap:10px;
+      font-weight:700;letter-spacing:.2px;
+    }
+    .brand .logo{
+      width:40px;height:40px;border-radius:12px;
+      display:grid;place-items:center;
+      background: radial-gradient(circle at 30% 30%, var(--accent), var(--accent2));
+      color:#0b1020;font-size:22px;font-weight:900;
+      box-shadow: 0 8px 24px rgba(0,0,0,.35), inset 0 0 0 2px rgba(255,255,255,.15);
+    }
+    .stats{
+      display:flex;align-items:center;gap:10px;
+      font-size:14px;color:var(--muted);
+    }
+    .pill{
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.04);
+      padding:6px 10px;border-radius:999px;
+      display:flex;align-items:center;gap:8px;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      border-radius:20px;
+      padding: clamp(18px, 2.5vw, 26px);
+    }
+    .scene-title{font-size:20px;margin:0 0 6px 0;color:#fff;font-weight:700}
+    .scene-text{font-size:16px;line-height:1.6;color:var(--text);margin:0 0 14px 0}
+    .choices{display:grid;gap:10px;margin-top:12px}
+    button.choice{
+      all:unset;display:flex;align-items:center;gap:10px;
+      background:var(--btn);border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;padding:14px 14px;cursor:pointer;
+      transition: transform .06s ease, background .2s ease, border-color .2s ease;
+    }
+    button.choice:active{transform: scale(.995)}
+    button.choice:hover{background:var(--btnHover);border-color:rgba(255,255,255,.18)}
+    .choice-emoji{font-size:22px}
+    .choice-text{flex:1}
+    .progress{
+      height:10px;border-radius:999px;
+      background: rgba(255,255,255,.06);
+      overflow:hidden; position:relative;margin-top:12px;
+    }
+    .progress > span{
+      display:block;height:100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      width:0%;
+      transition:width .4s ease;
+    }
+    .footer{
+      margin-top:14px;color:var(--muted);font-size:12px;text-align:center
+    }
+    .center{ text-align:center }
+    .cta{
+      margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center
+    }
+    .cta button{
+      all:unset; padding:12px 16px; border-radius:12px; cursor:pointer;
+      background:linear-gradient(180deg, var(--accent), var(--accent2));
+      color:#0a0f1f; font-weight:700; border: none;
+    }
+    .cta .ghost{
+      background: transparent; color: var(--text);
+      border:1px solid rgba(255,255,255,.12)
+    }
+    textarea{
+      width:100%;min-height:120px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);background:#0b1224;color:#e5e7eb;
+      padding:12px;font-size:14px;resize:vertical;
+    }
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 14px;border-radius:999px;
+      background:rgba(34,211,238,.12);
+      border:1px solid rgba(34,211,238,.4);
+      color:#e0fbff;font-weight:700;
+    }
+    .hidden{display:none}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand">
+        <div class="logo">❤</div>
+        <div>Maman Héroïne — par Célia</div>
+      </div>
+      <div class="stats">
+        <div class="pill" title="Points d'amour"><span>💞</span><strong id="score">0</strong></div>
+        <div class="pill" title="Progression"><span>📈</span><strong id="step">0/3</strong></div>
+      </div>
+    </header>
+
+    <main class="card" id="card">
+      <h2 class="scene-title" id="title">Bienvenue, Maman ✨</h2>
+      <p class="scene-text" id="text">
+        Ce petit jeu a été créé rien que pour toi. Tu vas faire des choix pour m’accompagner dans ma journée à Dubaï. 
+        Chaque geste d’amour te fera gagner des points 💞. À la fin, une surprise t’attend…
+      </p>
+      <div class="choices" id="choices">
+        <button class="choice" onclick="startGame()">
+          <span class="choice-emoji">▶️</span><span class="choice-text"><strong>Commencer</strong></span>
+        </button>
+      </div>
+      <div class="progress"><span id="bar"></span></div>
+      <div class="footer">Astuce : tu peux ajouter cette page à l’écran d’accueil (Partager → « Sur l’écran d’accueil »)</div>
+    </main>
+
+    <p class="footer">Créé avec tout l’amour du monde. — Célia</p>
+  </div>
+
+  <script>
+    const DATA = {
+      totalSteps: 3,
+      scenes: [
+        {
+          id: "s1",
+          title: "Matin à Dubaï ☀️",
+          text: "Je me réveille avec un mélange d’excitation et de trac. Quelle est ta première attention pour moi ?",
+          choices: [
+            { emoji:"🎧", text:"Un petit vocal doux pour me dire que tu m’aimes", delta:2, next:"s2" },
+            { emoji:"💧", text:"“Bois de l’eau, respire, et prends ton temps.”", delta:1, next:"s2" },
+            { emoji:"🤗", text:"Un câlin virtuel XXL (avec bisous)", delta:2, next:"s2" }
+          ]
+        },
+        {
+          id: "s2",
+          title: "Petit coup de mou 💭",
+          text: "Milieu de journée, un doute arrive. Comment tu m’aides à garder le cap ?",
+          choices: [
+            { emoji:"🏆", text:"Tu me rappelles une victoire récente dont tu es fière", delta:2, next:"s3" },
+            { emoji:"🌙", text:"Tu me conseilles de dormir tôt pour repartir du bon pied", delta:1, next:"s3" },
+            { emoji:"🍲", text:"Tu m’envoies une recette de couscous virtuel (secret de Maman)", delta:1, next:"s3" }
+          ]
+        },
+        {
+          id: "s3",
+          title: "Grand pas à faire 🚀",
+          text: "Une décision importante m’attend. Quelle force me donnes-tu ?",
+          choices: [
+            { emoji:"📝", text:"Un mot de fierté : “Je crois en toi, toujours.”", delta:2, next:"final" },
+            { emoji:"🫶", text:"Tu me rappelles que tu es là quoi qu’il arrive", delta:2, next:"final" },
+            { emoji:"😂", text:"Tu me fais rire avec un souvenir de nous", delta:1, next:"final" }
+          ]
+        }
+      ],
+      finale: {
+        title:"Ton badge de super-maman 🎖️",
+        tiers:[
+          {min:0, msg:"Merci pour tout ton amour. Même un petit geste de toi change ma journée."},
+          {min:4, msg:"Ton soutien me porte loin. Grâce à toi, je me sens forte et sereine."},
+          {min:6, msg:"Tu es ma force, mon repère, mon cœur. Avec toi, je me sens invincible."}
+        ],
+        letterTop:"Ma maman chérie,\n\nCe mini-jeu n’est qu’un prétexte pour te dire l’essentiel :",
+        letterEnd:"\n\nMerci d’être toi. Merci pour ta douceur, ta force, ta patience et ton amour sans conditions.\nJe t’aime de tout mon cœur. — Célia"
+      }
+    };
+
+    let score = Number(localStorage.getItem("mh_score")||0);
+    let step  = Number(localStorage.getItem("mh_step")||0);
+    let current = null;
+
+    const elScore = document.getElementById("score");
+    const elStep  = document.getElementById("step");
+    const elTitle = document.getElementById("title");
+    const elText  = document.getElementById("text");
+    const elChoices = document.getElementById("choices");
+    const elBar   = document.getElementById("bar");
+    const card    = document.getElementById("card");
+
+    function save(){ localStorage.setItem("mh_score", score); localStorage.setItem("mh_step", step); }
+
+    function updateHUD(){
+      elScore.textContent = score;
+      elStep.textContent  = `${Math.min(step, DATA.totalSteps)}/${DATA.totalSteps}`;
+      elBar.style.width = `${(Math.min(step, DATA.totalSteps) / DATA.totalSteps) * 100}%`;
+    }
+
+    function startGame(){
+      score = 0; step = 0; save();
+      go(DATA.scenes[0].id);
+    }
+
+    function go(id){
+      current = DATA.scenes.find(s=>s.id===id);
+      if(!current){ return finale(); }
+      step = Math.min(step+1, DATA.totalSteps); save();
+      updateHUD();
+      elTitle.textContent = current.title;
+      elText.textContent  = current.text;
+      elChoices.innerHTML = "";
+      current.choices.forEach(c=>{
+        const btn = document.createElement("button");
+        btn.className = "choice";
+        btn.innerHTML = `<span class="choice-emoji">${c.emoji}</span><span class="choice-text">${c.text}</span>`;
+        btn.addEventListener("click", ()=>{
+          score += (c.delta||0); save();
+          // small tap animation
+          btn.style.transform = "scale(.985)"; setTimeout(()=>{ btn.style.transform = ""; }, 120);
+          setTimeout(()=> go(c.next), 120);
+        });
+        elChoices.appendChild(btn);
+      });
+    }
+
+    function finale(){
+      elTitle.textContent = DATA.finale.title;
+      const tier = DATA.finale.tiers.slice().reverse().find(t=>score>=t.min) || DATA.finale.tiers[0];
+      const msg  = tier.msg;
+
+      const letter = `${DATA.finale.letterTop}\n\n${msg}${DATA.finale.letterEnd}`;
+
+      elText.innerHTML = `<div class="center" style="margin-bottom:10px">
+        <span class="badge">🏅 Meilleure Maman du monde</span>
+      </div>
+      <p class="scene-text center" style="margin:10px 0 18px 0">${msg}</p>
+      <p style="margin:0 0 10px 0;color:var(--muted);font-size:14px" class="center">Ton score d’amour : <strong style="color:#fff">${score}</strong> / ${DATA.totalSteps*2}</p>
+      <hr style="border:none;height:1px;background:rgba(255,255,255,.08);margin:14px 0">
+      <p style="margin:0 0 8px 0" class="scene-text"><strong>Message pour toi :</strong></p>`;
+
+      const ta = document.createElement("textarea");
+      ta.value = letter;
+      elChoices.innerHTML = "";
+      elChoices.appendChild(ta);
+
+      const cta = document.createElement("div");
+      cta.className = "cta";
+      cta.innerHTML = `
+        <button onclick="navigator.clipboard.writeText(document.querySelector('textarea').value)">
+          Copier le message
+        </button>
+        <button class="ghost" onclick="restart()">Rejouer</button>
+      `;
+      elChoices.appendChild(cta);
+      updateHUD();
+    }
+
+    function restart(){
+      localStorage.removeItem("mh_score");
+      localStorage.removeItem("mh_step");
+      location.reload();
+    }
+
+    // If user already started, resume
+    if(step>0 && step<=DATA.totalSteps){
+      go(DATA.scenes[Math.min(step,1)].id); // resume from the last scene user likely reached
+    } else {
+      updateHUD();
+    }
+  </script>
+</body>
+</html>
